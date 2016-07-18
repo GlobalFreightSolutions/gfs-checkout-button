@@ -39,6 +39,7 @@
                 tap: 'closeCheckout',                
             },
 
+            ready: function () {
                 window.addEventListener('close-checkout-complete', this._closeCheckoutComplete.bind(this), false);
             },
 
