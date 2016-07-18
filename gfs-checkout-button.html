@@ -36,26 +36,29 @@
             },
 
             listeners: {
-                tap: 'closeCheckout'
+                tap: 'closeCheckout',                
             },
 
-            closeCheckout : function(e) {
-                debugger;
+                window.addEventListener('close-checkout-complete', this._closeCheckoutComplete.bind(this), false);
+            },
 
+            _closeCheckoutComplete: function (e) {
+                // Submit the target form back to the webserver so it has access to the selected service details
+                var theForm = document.getElementById(this.checkoutForm);
+                theForm.submit();                
+			},
+
+            closeCheckout : function(e) {
                 // Get the chosen service details from the widget
                 var checkoutWidget = document.getElementById(this.checkoutWidget);
-                var checkoutJson = checkoutWidget.getChosenServiceDetails();
+                var checkoutJson = checkoutWidget.getChosenServiceDetails();                
 
                 // Fire an Ajax call to the Checkout server to close the checkout session
-                checkoutWidget.closeCheckoutRequest();
+                checkoutWidget.closeCheckoutRequest(checkoutJson);
 
                 // Set the target form field with the selected service details
                 var theOutputCtrl = document.getElementById(this.checkoutResults)
                 theOutputCtrl.value = btoa(checkoutJson);
-
-                // Submit the target form back to the webserver so it has access to the selected service details
-                var theForm = document.getElementById(this.checkoutForm);
-                theForm.submit();
             }
         });
     </script>
